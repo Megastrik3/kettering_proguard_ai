@@ -63,8 +63,6 @@ def export_model(model_name='best-seg.pt'):
             raise FileNotFoundError("GPU not detected. Cannot export to engine format.")
         model = YOLO(model_name)  # Load the model
         output = model.export(format=export_formats[export_format])
-        if not export_formats[export_format] == "ncnn":
-            shutil.copy(output, f"./{str(model_name).removesuffix('.pt')}.{export_formats[export_format]}")
         print(f"Model exported successfully in {export_formats[export_format]} format.")
         print(output)
         print("Copying model to Tailscale...")
@@ -72,6 +70,7 @@ def export_model(model_name='best-seg.pt'):
             subprocess.run(['tailscale', 'file', 'cp', f"{str(model_name).removesuffix('.pt')}.{export_formats[export_format]}", '100.67.90.77:'], shell=True, capture_output=True, check=True)
         except subprocess.CalledProcessError as e:
             print(f"Error copying file to Tailscale: {e}")
+        print("Exporting completed successfully")
         return output
     except FileNotFoundError as nf:
         print(f"Error: {nf}. Please ensure the model file exists.")
