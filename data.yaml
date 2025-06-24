@@ -1,13 +1,13 @@
-train: datasets/bus-aps/train/images
-val: datasets/bus-aps/valid/images
-test: datasets/bus-aps/test/images
+train: ../train/images
+val: ../valid/images
+test: ../test/images
 
-nc: 17
-names: ['Bicycle', 'Bike', 'Car', 'Cyclist', 'Pedestrian', 'Pedestrians', 'backpack', 'bag', 'cyclist', 'dog', 'face', 'handbag', 'head', 'helmet', 'people', 'person', 'persons']
+nc: 2
+names: ['backpack', 'person-DCHx']
 
 roboflow:
   workspace: busaps
-  project: people-with-bags
-  version: 2
-  license: Private
-  url: https://universe.roboflow.com/busaps/people-with-bags/dataset/2
+  project: bus-aps-seg
+  version: 5
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/busaps/bus-aps-seg/dataset/5

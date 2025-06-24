@@ -7,24 +7,27 @@ import os
 os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 import cv2
 
-def main():
+def main(model_file='best-seg.pt'):
     print("Starting YOLO Object Detection...")
     cap = cv2.VideoCapture(0)
     # Set frame time baseline
     old_frame_time = 0
     new_frame_time = 0
     # Set camera resolution
-    cap.set(3, 1920)
-    cap.set(4, 1080)
+    cap.set(3, 1080)
+    cap.set(4, 1920)
     # Load custom model
-    if gpu_verify.check_gpu():
-        model_file = "busaps.engine"
-    else:
-        model_file = "busaps.onnx"
-    model = YOLO(model_file) 
+    # if gpu_verify.check_gpu():
+    #     model_file = "busaps.engine"
+    # else:
+    #     model_file = "busaps.onnx"
+    # model_file = "best-seg.engine"  # Use the ONNX model for CPU inference
+    model = YOLO(model_file, task="segment")  # Load the custom model
     print("Model loaded successfully.")
 
     classNames = model.names
+    print("Class names loaded successfully.")
+    print(classNames)
 
     while True:
         print("Capturing frame...")
@@ -58,6 +61,12 @@ def main():
                 cv2.rectangle(img, (x1, y1), (x2, y2), (10, 241, 2), 3)
 
                 
+                if r.masks is not None:
+                    for mask in r.masks.xy:
+                        # The 'mask' variable is a list of (x, y) points
+                        # We can draw it as a filled polygon
+                        cv2.polylines(img, [mask.astype(int)], isClosed=True, color=(255, 0, 255), thickness=2)
+
                 confidence = math.ceil((box.conf[0]*100))/100
                 print("Confidence --->",confidence)
 
@@ -75,7 +84,8 @@ def main():
                 cv2.putText(img, f"{classNames[cls]}: {confidence}", org, font, fontScale, color, thickness)
 
         cv2.putText(img, fps, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2)
-        cv2.imshow('BUS-APS', img)
+        #cv2.putText(img, str(results.count()), (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2)
+        cv2.imshow(f'BUS-APS: {model_file}', img)
         if cv2.waitKey(1) == ord('q'):
             break
 
