@@ -4,3 +4,5 @@
 /runs
 /__pycache__
 busaps-seg2.engine
+*.pt
+*.engine*.onnx
