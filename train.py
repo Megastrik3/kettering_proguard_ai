@@ -27,8 +27,8 @@ export_formats = {
 
 def main():
     print("Starting YOLO Training...")
-    model = YOLO("best.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bas-aps/data.yaml", epochs=100, imgsz=640)
+    model = YOLO("yolo11n-seg.pt")  # Load a COCO-pretrained YOLO11n model
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=200, imgsz=640, batch=0.8, device=0, plots=True, resume=True)
     print("Training completed.")
     print(results)
     try:
@@ -37,7 +37,7 @@ def main():
         return f'latest-seg-{version_code}.pt'
     except Exception as e:
         print(f"Error copying file: {e}")
-        return 'best.pt'
+        return 'best-seg.pt'
 
 
 def export_model(model_name='best-seg.pt'):

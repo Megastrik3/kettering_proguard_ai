@@ -1,5 +1,4 @@
 import math
-import gpu_verify
 import time
 from ultralytics import YOLO
 # https://www.reddit.com/r/learnpython/comments/zxxsal/open_cv_video_from_webcam_takes_abnormally_long/
@@ -14,8 +13,11 @@ def main(model_file='best-seg.pt'):
     old_frame_time = 0
     new_frame_time = 0
     # Set camera resolution
-    cap.set(3, 1080)
-    cap.set(4, 1920)
+    cap.set(3, 1920)
+    cap.set(4, 1080)
+
+    roi_x, roi_y, roi_w, roi_h = 0, 0, 1920, 1080
+
     # Load custom model
     # if gpu_verify.check_gpu():
     #     model_file = "busaps.engine"
@@ -35,8 +37,8 @@ def main(model_file='best-seg.pt'):
         if not success:
             print("Failed to capture frames. Exiting...")
             break
-
-        results = model(img, stream=True, conf=0.65)
+        roi_frame = img[roi_y:roi_y + roi_h, roi_x:roi_x + roi_w]
+        results = model(roi_frame, stream=True, conf=0.65)
         # Calculate FPS 
         # https://www.geeksforgeeks.org/python/python-displaying-real-time-fps-at-which-webcam-video-file-is-processed-using-opencv/
         new_frame_time = time.time()
@@ -55,7 +57,7 @@ def main(model_file='best-seg.pt'):
             for box in boxes:
                 # bounding box
                 x1, y1, x2, y2 = box.xyxy[0]
-                x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2) # convert to int values
+                x1, y1, x2, y2 = int(x1 + roi_x), int(y1 + roi_y), int(x2 + roi_x), int(y2 + roi_y) # convert to int values
 
                 
                 cv2.rectangle(img, (x1, y1), (x2, y2), (10, 241, 2), 3)
@@ -65,14 +67,15 @@ def main(model_file='best-seg.pt'):
                     for mask in r.masks.xy:
                         # The 'mask' variable is a list of (x, y) points
                         # We can draw it as a filled polygon
-                        cv2.polylines(img, [mask.astype(int)], isClosed=True, color=(255, 0, 255), thickness=2)
-
-                confidence = math.ceil((box.conf[0]*100))/100
-                print("Confidence --->",confidence)
-
+                        offset_mask = mask + [roi_x, roi_y]
+                        cv2.polylines(img, [offset_mask.astype(int)], isClosed=True, color=(255, 0, 255), thickness=2)
                 
                 cls = int(box.cls[0])
-                print("Class name -->", classNames[cls])
+                if int(box.cls[0]) > 0:
+                    print("Class name -->", classNames[cls])
+                    confidence = math.ceil((box.conf[0]*100))/100
+                    print("Confidence --->",confidence)
+                
 
                 
                 org = [x1, y1]
@@ -82,7 +85,7 @@ def main(model_file='best-seg.pt'):
                 thickness = 2
 
                 cv2.putText(img, f"{classNames[cls]}: {confidence}", org, font, fontScale, color, thickness)
-
+        cv2.rectangle(img, (roi_x, roi_y), (roi_x + roi_w, roi_y + roi_h), (0, 255, 0), 2)  # Draw ROI
         cv2.putText(img, fps, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2)
         #cv2.putText(img, str(results.count()), (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2)
         cv2.imshow(f'BUS-APS: {model_file}', img)
