@@ -4,29 +4,29 @@ from ultralytics import YOLO
 # https://www.reddit.com/r/learnpython/comments/zxxsal/open_cv_video_from_webcam_takes_abnormally_long/
 import os
 os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
+
 import cv2
 
+CAM_RESOLUTION = (1920, 1080)  # Set the camera resolution to 1920x1080
+
 def main(model_file='best-seg.pt'):
-    print("Starting YOLO Object Detection...")
+    print("Starting YOLO Object Detection...\n\n")
     cap = cv2.VideoCapture(0)
     # Set frame time baseline
     old_frame_time = 0
     new_frame_time = 0
-    # Set camera resolution
-    cap.set(3, 1920)
-    cap.set(4, 1080)
 
+    # Set camera resolution
+    cap.set(3, CAM_RESOLUTION[0])
+    cap.set(4, CAM_RESOLUTION[1])
+
+    # Set the ROI location (X, Y) and size (W, H)
     roi_x, roi_y, roi_w, roi_h = 0, 0, 1920, 1080
 
-    # Load custom model
-    # if gpu_verify.check_gpu():
-    #     model_file = "busaps.engine"
-    # else:
-    #     model_file = "busaps.onnx"
-    # model_file = "best-seg.engine"  # Use the ONNX model for CPU inference
     model = YOLO(model_file, task="segment")  # Load the custom model
     print("Model loaded successfully.")
 
+    # Load class names from the model
     classNames = model.names
     print("Class names loaded successfully.")
     print(classNames)
@@ -38,7 +38,9 @@ def main(model_file='best-seg.pt'):
             print("Failed to capture frames. Exiting...")
             break
         roi_frame = img[roi_y:roi_y + roi_h, roi_x:roi_x + roi_w]
+        # Load the model and perform inference only showing objects with a confidence greater than 65%
         results = model(roi_frame, stream=True, conf=0.65)
+
         # Calculate FPS 
         # https://www.geeksforgeeks.org/python/python-displaying-real-time-fps-at-which-webcam-video-file-is-processed-using-opencv/
         new_frame_time = time.time()
@@ -59,8 +61,6 @@ def main(model_file='best-seg.pt'):
                 x1, y1, x2, y2 = box.xyxy[0]
                 x1, y1, x2, y2 = int(x1 + roi_x), int(y1 + roi_y), int(x2 + roi_x), int(y2 + roi_y) # convert to int values
 
-                
-                cv2.rectangle(img, (x1, y1), (x2, y2), (10, 241, 2), 3)
 
                 
                 if r.masks is not None:
@@ -85,9 +85,12 @@ def main(model_file='best-seg.pt'):
                 thickness = 2
 
                 cv2.putText(img, f"{classNames[cls]}: {confidence}", org, font, fontScale, color, thickness)
+
+                
         cv2.rectangle(img, (roi_x, roi_y), (roi_x + roi_w, roi_y + roi_h), (0, 255, 0), 2)  # Draw ROI
-        cv2.putText(img, fps, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2)
-        #cv2.putText(img, str(results.count()), (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2)
+        cv2.putText(img, fps, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2) # Display FPS
+
+        # Create Window
         cv2.imshow(f'BUS-APS: {model_file}', img)
         if cv2.waitKey(1) == ord('q'):
             break

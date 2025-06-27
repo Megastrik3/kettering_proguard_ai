@@ -3,7 +3,6 @@ import gpu_verify
 from ultralytics import YOLO
 from time import sleep
 import subprocess
-import time
 import datetime
 
 export_formats = {
@@ -28,15 +27,18 @@ export_formats = {
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n-seg.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=200, imgsz=640, batch=0.8, device=0, plots=True, resume=True)
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=200, imgsz=640, batch=0.8, device=0, plots=True, resume=True) # Define the training parameters
     print("Training completed.")
     print(results)
     try:
         version_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         shutil.copy(results, f'latest-seg-{version_code}.pt')
         return f'latest-seg-{version_code}.pt'
-    except Exception as e:
+    except FileNotFoundError as e:
         print(f"Error copying file: {e}")
+        return 'best-seg.pt'
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
         return 'best-seg.pt'
 
 
@@ -77,5 +79,7 @@ def export_model(model_name='best-seg.pt'):
     except Exception as e:
         print(f"An error occurred during export: {e}")
         print("Export failed. Please check the format and try again.")
+
+        
     sleep(2)
     print("Exiting YOLO Model Exporter...")
