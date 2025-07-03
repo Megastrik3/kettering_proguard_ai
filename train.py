@@ -26,23 +26,23 @@ export_formats = {
 
 def main():
     print("Starting YOLO Training...")
-    model = YOLO("yolo11n-seg.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=200, imgsz=640, batch=0.8, device=0, plots=True, resume=True) # Define the training parameters
+    model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=100, imgsz=640, batch=0.8, device=0) # Define the training parameters
     print("Training completed.")
     print(results)
     try:
         version_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        shutil.copy(results, f'latest-seg-{version_code}.pt')
-        return f'latest-seg-{version_code}.pt'
+        shutil.copy(results, f'latest-{version_code}.pt')
+        return f'latest-{version_code}.pt'
     except FileNotFoundError as e:
         print(f"Error copying file: {e}")
-        return 'best-seg.pt'
+        return 'best.pt'
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-        return 'best-seg.pt'
+        return 'best.pt'
 
 
-def export_model(model_name='best-seg.pt'):
+def export_model(model_name='best.pt'):
     print("Do you want to export the model? (y/n): ", end="")
     do_train = input().strip().lower()
     if do_train == 'n':

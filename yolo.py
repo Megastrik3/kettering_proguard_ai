@@ -9,7 +9,7 @@ import cv2
 
 CAM_RESOLUTION = (1920, 1080)  # Set the camera resolution to 1920x1080
 
-def main(model_file='best-seg.pt'):
+def main(model_file='model.onnx'):
     print("Starting YOLO Object Detection...\n\n")
     cap = cv2.VideoCapture(0)
     # Set frame time baseline
@@ -23,7 +23,7 @@ def main(model_file='best-seg.pt'):
     # Set the ROI location (X, Y) and size (W, H)
     roi_x, roi_y, roi_w, roi_h = 0, 0, 1920, 1080
 
-    model = YOLO(model_file, task="segment")  # Load the custom model
+    model = YOLO(model_file, task="detect")  # Load the custom model
     print("Model loaded successfully.")
 
     # Load class names from the model
@@ -62,13 +62,14 @@ def main(model_file='best-seg.pt'):
                 x1, y1, x2, y2 = int(x1 + roi_x), int(y1 + roi_y), int(x2 + roi_x), int(y2 + roi_y) # convert to int values
 
 
+                cv2.rectangle(img, (x1, y1), (x2, y2), (10, 241, 2), 3)
                 
-                if r.masks is not None:
-                    for mask in r.masks.xy:
-                        # The 'mask' variable is a list of (x, y) points
-                        # We can draw it as a filled polygon
-                        offset_mask = mask + [roi_x, roi_y]
-                        cv2.polylines(img, [offset_mask.astype(int)], isClosed=True, color=(255, 0, 255), thickness=2)
+                # if r.masks is not None:
+                #     for mask in r.masks.xy:
+                #         # The 'mask' variable is a list of (x, y) points
+                #         # We can draw it as a filled polygon
+                #         offset_mask = mask + [roi_x, roi_y]
+                #         cv2.polylines(img, [offset_mask.astype(int)], isClosed=True, color=(255, 0, 255), thickness=2)
                 
                 cls = int(box.cls[0])
                 if int(box.cls[0]) > 0:

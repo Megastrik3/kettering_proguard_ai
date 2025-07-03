@@ -18,7 +18,7 @@ def ask_for_traning():
             exported_model = train.export_model(model_output)
             if exported_model is None:
                 print("Export failed. Using the best model instead.")
-                exported_model = 'best-seg.pt'
+                exported_model = 'best.pt'
             yolo.main(exported_model)
             break
         elif ans == 'n':
@@ -26,7 +26,7 @@ def ask_for_traning():
             exported_model = train.export_model()
             if exported_model is None:
                 print("Export failed. Using the best model instead.")
-                exported_model = 'best-seg.pt'
+                exported_model = 'best.pt'
             yolo.main(exported_model)
             break
         else:
