@@ -27,7 +27,7 @@ export_formats = {
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=100, imgsz=640, batch=0.8, device=0) # Define the training parameters
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=300, imgsz=640, batch=32, device=0) # Define the training parameters
     print("Training completed.")
     print(results)
     try:
