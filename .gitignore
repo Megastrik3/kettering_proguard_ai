@@ -4,6 +4,7 @@
 /runs
 /__pycache__
 busaps-seg2.engine
-*.pt
-*.engine
-*.onnx
+yolo11n.pt
+bus-aps-code.zip
+Bus-APS-Version1.0.zip
+

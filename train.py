@@ -2,7 +2,6 @@ import shutil
 import gpu_verify
 from ultralytics import YOLO
 from time import sleep
-import subprocess
 import datetime
 import os
 
