@@ -27,13 +27,15 @@ export_formats = {
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=1, imgsz=640, batch=32, device=0) # Define the training parameters
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=300, imgsz=640, batch=-1, device=0, patience=50) # Define the training parameters
     print("Training completed.")
     print(results)  # Path to the output directory of training results
     try:
         version_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         training_runs = len(next(os.walk('./runs/detect/'))[1])
         print(f"Number of training runs: {training_runs}")
+        if training_runs == 1:
+            training_runs = ''
         newest_model = f'runs/detect/train{training_runs}/weights/best.pt'
         shutil.copy(newest_model, f'./trained_models/latest-{version_code}.pt')
         return f'./trained_models/latest-{version_code}.pt'
