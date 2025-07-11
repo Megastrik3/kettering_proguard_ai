@@ -4,6 +4,7 @@ from ultralytics import YOLO
 from time import sleep
 import subprocess
 import datetime
+import os
 
 export_formats = {
     1: "torchscript",
@@ -27,27 +28,29 @@ export_formats = {
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=300, imgsz=640, batch=32, device=0) # Define the training parameters
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=1, imgsz=640, batch=32, device=0) # Define the training parameters
     print("Training completed.")
-    print(results)
+    print(results)  # Path to the output directory of training results
     try:
         version_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        shutil.copy(results, f'latest-{version_code}.pt')
-        return f'latest-{version_code}.pt'
+        training_runs = len(next(os.walk('./runs/detect/'))[1])
+        print(f"Number of training runs: {training_runs}")
+        newest_model = f'runs/detect/train{training_runs}/weights/best.pt'
+        shutil.copy(newest_model, f'./trained_models/latest-{version_code}.pt')
+        return f'./trained_models/latest-{version_code}.pt'
     except FileNotFoundError as e:
         print(f"Error copying file: {e}")
-        return 'best.pt'
+        return './trained_models/best.pt'
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-        return 'best.pt'
-
+        return './trained_models/best.pt'
 
 def export_model(model_name='best.pt'):
     print("Do you want to export the model? (y/n): ", end="")
     do_train = input().strip().lower()
     if do_train == 'n':
         print("Skipping export.")
-        return
+        return model_name
     while True:
         print("Export options:")
         for key, value in export_formats.items():
@@ -62,23 +65,20 @@ def export_model(model_name='best.pt'):
     try:
         if export_formats[export_format] == "engine" and not gpu_verify.check_gpu():
             print("GPU not detected. Cannot export to engine format.")
-            raise FileNotFoundError("GPU not detected. Cannot export to engine format.")
+            raise Exception("GPU not detected. Cannot export to engine format.")
         model = YOLO(model_name)  # Load the model
-        output = model.export(format=export_formats[export_format])
+        output = model.export(format=export_formats[export_format], name=model_name)
         print(f"Model exported successfully in {export_formats[export_format]} format.")
         print(output)
-        print("Copying model to Tailscale...")
-        try:
-            subprocess.run(['tailscale', 'file', 'cp', f"{str(model_name).removesuffix('.pt')}.{export_formats[export_format]}", '100.67.90.77:'], shell=True, capture_output=True, check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Error copying file to Tailscale: {e}")
         print("Exporting completed successfully")
         return output
     except FileNotFoundError as nf:
         print(f"Error: {nf}. Please ensure the model file exists.")
+        return model_name
     except Exception as e:
         print(f"An error occurred during export: {e}")
         print("Export failed. Please check the format and try again.")
+        return model_name
 
         
     sleep(2)

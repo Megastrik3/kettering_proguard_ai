@@ -1,3 +1,4 @@
+import os
 from time import sleep
 import train
 import yolo
@@ -22,11 +23,36 @@ def ask_for_traning():
             yolo.main(exported_model)
             break
         elif ans == 'n':
-            print("Using existing model.")
-            exported_model = train.export_model()
+            print("Using existing model...")
+            existing_models = os.listdir('./trained_models/')
+            if existing_models != []:
+                num_models = 1
+                trained_models = {}
+                for model in existing_models:
+                    trained_models[num_models] = model
+                    num_models += 1
+                while True:
+                        print("Trained Models:")
+                        for key, value in trained_models.items():
+                            print(f"{key}: {value}")
+                        model_choice = input(f"Please select a model [1-{len(trained_models)}]: ")
+                        if not model_choice.isdigit():
+                            print(f"Invalid input. Please enter a number between 1 and {len(trained_models)}.")
+                            continue
+                        else:
+                            model_choice = int(model_choice)
+                            exported_model = train.export_model(f'trained_models/{trained_models[model_choice]}')
+                            yolo.main(exported_model)
+                            break
+            elif existing_models == []:
+                print("Using default model...")
+                model_choice = 0
+                exported_model = train.export_model("yolo11n.pt")
+                yolo.main(exported_model)
+                break
             if exported_model is None:
                 print("Export failed. Using the best model instead.")
-                exported_model = 'best.pt'
+                exported_model = 'yolo11n.pt'
             yolo.main(exported_model)
             break
         else:

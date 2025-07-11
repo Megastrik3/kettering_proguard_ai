@@ -9,7 +9,7 @@ import cv2
 
 CAM_RESOLUTION = (1920, 1080)  # Set the camera resolution to 1920x1080
 
-def main(model_file='best.pt'):
+def main(model_file='model.onnx'):
     print("Starting YOLO Object Detection...\n\n")
     cap = cv2.VideoCapture(0)
     # Set frame time baseline
