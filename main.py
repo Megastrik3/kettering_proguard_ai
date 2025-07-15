@@ -36,13 +36,12 @@ def ask_for_traning():
                         for key, value in trained_models.items():
                             print(f"{key}: {value}")
                         model_choice = input(f"Please select a model [1-{len(trained_models)}]: ")
-                        if not model_choice.isdigit():
+                        if int(model_choice) > len(trained_models) or int(model_choice) < 1 or model_choice.isdigit() is False:
                             print(f"Invalid input. Please enter a number between 1 and {len(trained_models)}.")
                             continue
                         else:
                             model_choice = int(model_choice)
                             exported_model = train.export_model(f'trained_models/{trained_models[model_choice]}')
-                            yolo.main(exported_model)
                             break
             elif existing_models == []:
                 print("Using default model...")

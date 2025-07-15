@@ -27,7 +27,7 @@ export_formats = {
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=300, imgsz=640, batch=-1, device=0, patience=50) # Define the training parameters
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=450, imgsz=640, batch=-1, device=0, patience=50) # Define the training parameters
     print("Training completed.")
     print(results)  # Path to the output directory of training results
     try:
@@ -48,11 +48,14 @@ def main():
 
 def export_model(model_name='best.pt'):
     print("Do you want to export the model? (y/n): ", end="")
-    do_train = input().strip().lower()
-    if do_train == 'n':
-        print("Skipping export.")
-        return model_name
     while True:
+        do_train = input().strip().lower()
+        if do_train == 'n':
+            print("Skipping export.")
+            return model_name
+        elif do_train != 'y':
+            print("Invalid input. Please enter 'y' or 'n'.")
+            continue
         print("Export options:")
         for key, value in export_formats.items():
             print(f"{key}: {value}")
