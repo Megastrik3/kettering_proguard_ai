@@ -34,7 +34,7 @@ def tuneModel(model_name):
 
     # Run the evaluation
     model.tune(
-        data="./datasets/bus-aps/data.yaml", epochs=10, iterations=300, optimizer="AdamW", plots=True, save=False, val=True, device=0
+        data="./datasets/bus-aps/data.yaml", epochs=10, iterations=300, optimizer="AdamW", plots=False, save=False, val=False, device=0
     )
 
 
