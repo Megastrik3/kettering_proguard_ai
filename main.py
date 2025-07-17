@@ -2,7 +2,7 @@ import os
 from time import sleep
 import train
 import yolo
-import sonyimx500
+#import sonyimx500
 
 def main():
     print("Starting bus anti-pinch system...")
@@ -23,7 +23,7 @@ def ask_for_traning():
                 exported_model = 'best.pt'
             if exported_model.find('imx') != -1:
                 print("IMX500 model detected. Using IMX500 deployment script.")
-                sonyimx500.main(exported_model)
+               # sonyimx500.main(exported_model)
             else:
                 yolo.main(exported_model)
             break
@@ -54,7 +54,7 @@ def ask_for_traning():
                 exported_model = train.export_model("yolo11n.pt")
             if exported_model.find('imx') != -1:
                 print("IMX500 model detected. Using IMX500 deployment script.")
-                sonyimx500.main(exported_model)
+             #   sonyimx500.main(exported_model)
             else:
                 yolo.main(exported_model)
                 break
@@ -64,7 +64,7 @@ def ask_for_traning():
 
             if exported_model.find('imx') != -1:
                 print("IMX500 model detected. Using IMX500 deployment script.")
-                sonyimx500.main(exported_model)
+             #   sonyimx500.main(exported_model)
             else:
                 yolo.main(exported_model)
                 break
