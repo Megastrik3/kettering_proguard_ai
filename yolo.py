@@ -9,12 +9,14 @@ import cv2
 
 CAM_RESOLUTION = (1920, 1080)  # Set the camera resolution to 1920x1080
 
-def main(model_file='model.onnx'):
+def main(model_file='yolo11n.pt'):
     print("Starting YOLO Object Detection...\n\n")
     cap = cv2.VideoCapture(0)
     # Set frame time baseline
     old_frame_time = 0
     new_frame_time = 0
+    fps_sum = 0
+    fps_counter = 0
 
     # Set camera resolution
     cap.set(3, CAM_RESOLUTION[0])
@@ -47,7 +49,9 @@ def main(model_file='model.onnx'):
         fps = 1 / (new_frame_time - old_frame_time)
         old_frame_time = new_frame_time
         fps = int(fps)
+        fps_sum += fps
         fps = str(fps)
+        fps_counter += 1
 
 
         # Draw and label boxes on detected objects
@@ -98,6 +102,7 @@ def main(model_file='model.onnx'):
 
     cap.release()
     cv2.destroyAllWindows()
+    print("Average FPS:", fps_sum / fps_counter if fps_counter > 0 else 0)
 
 if __name__ == '__main__':
     main()

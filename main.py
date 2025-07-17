@@ -2,6 +2,7 @@ import os
 from time import sleep
 import train
 import yolo
+#import sonyimx500
 
 def main():
     print("Starting bus anti-pinch system...")
@@ -20,7 +21,11 @@ def ask_for_traning():
             if exported_model is None:
                 print("Export failed. Using the best model instead.")
                 exported_model = 'best.pt'
-            yolo.main(exported_model)
+            if exported_model.find('imx') != -1:
+                print("IMX500 model detected. Using IMX500 deployment script.")
+               # sonyimx500.main(exported_model)
+            else:
+                yolo.main(exported_model)
             break
         elif ans == 'n':
             print("Using existing model...")
@@ -47,13 +52,22 @@ def ask_for_traning():
                 print("Using default model...")
                 model_choice = 0
                 exported_model = train.export_model("yolo11n.pt")
+            if exported_model.find('imx') != -1:
+                print("IMX500 model detected. Using IMX500 deployment script.")
+             #   sonyimx500.main(exported_model)
+            else:
                 yolo.main(exported_model)
                 break
             if exported_model is None:
                 print("Export failed. Using the best model instead.")
                 exported_model = 'yolo11n.pt'
-            yolo.main(exported_model)
-            break
+
+            if exported_model.find('imx') != -1:
+                print("IMX500 model detected. Using IMX500 deployment script.")
+             #   sonyimx500.main(exported_model)
+            else:
+                yolo.main(exported_model)
+                break
         else:
             print("Invalid input. Please enter 'y' or 'n'.")
             continue
