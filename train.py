@@ -27,7 +27,7 @@ export_formats = {
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=450, imgsz=640, batch=-1, device=0, patience=50) # Define the training parameters
+    results = model.train(data="datasets/bus-aps/data.yaml", epochs=171, imgsz=640, batch=-1, device=0, patience=50) # Define the training parameters
     print("Training completed.")
     print(results)  # Path to the output directory of training results
     try:
