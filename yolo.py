@@ -52,6 +52,7 @@ def main(model_file='yolo11n.pt'):
         fps_sum += fps
         fps = str(fps)
         fps_counter += 1
+        confidence = 0
 
 
         # Draw and label boxes on detected objects

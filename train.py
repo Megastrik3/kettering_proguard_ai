@@ -27,11 +27,11 @@ export_formats = {
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
-    results = model.train(data="datasets/bus-aps/data.yaml", epochs=171, imgsz=640, batch=-1, device=0, patience=50) # Define the training parameters
+    model.train(data="datasets/bus-aps/data.yaml", epochs=450, imgsz=640, batch=-1, device=0, patience=50, hsv_h=0.25, hsv_s=0.5, hsv_v=0.5, translate=0.25, scale=0.3, fliplr=0.2)
     print("Training completed.")
     try:
         version_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        training_runs = len(next(os.walk('./runs/detect/'))[1])
+        training_runs = len([d for d in next(os.walk('./runs/detect/'))[1] if 'train' in d])
         print(f"Number of training runs: {training_runs}")
         if training_runs == 1:
             training_runs = ''

@@ -2,9 +2,9 @@ from ultralytics import YOLO
 import os
 import model_metrics
 
+if __name__ == "__main__":
+    selected_model = model_metrics.getModels()
 
-selected_model = model_metrics.getModels()
+    model = YOLO(selected_model)
 
-model = YOLO(selected_model)
-
-metrics = model.val(data="./datasets/bus-aps/data.yaml", save_json=True, split="test")
+    metrics = model.val(data="./datasets/bus-aps/data.yaml", split="test", save_json=True, save=True, imgsz=640, device=0, verbose=True)
