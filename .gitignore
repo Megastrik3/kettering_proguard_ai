@@ -7,4 +7,7 @@ busaps-seg2.engine
 yolo11n.pt
 bus-aps-code.zip
 Bus-APS-Version1.0.zip
-
+*.mp4
+*.avi
+*.mov
+*.mkv
