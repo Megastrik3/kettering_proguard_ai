@@ -36,6 +36,7 @@ def main(model_path='trained_models'):
 
     with device as stream:
         for frame in stream:
+            device.get_kpi_info()
             detections = frame.detections[frame.detections.confidence > 0.55]
             labels = [f"{model.labels[class_id]}: {score:0.2f}" for _, score, class_id, _ in detections]
 
