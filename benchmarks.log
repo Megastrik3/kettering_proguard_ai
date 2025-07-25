@@ -1,0 +1,15 @@
+
+Benchmarks complete for trained_models/latest-20250722203646.pt on ./datasets/bus-aps/data.yaml at imgsz=640 (78.26s)
+Benchmarks legend:  - ✅ Success  - ❎ Export passed but validation failed  - ❌️ Export failed
+  Format Status❔  Size (MB)  metrics/mAP50-95(B)  Inference time (ms/im)    FPS
+0   ONNX       ✅       10.1               0.2878                   25.68  38.94
+
+Benchmarks complete for trained_models/latest-20250722203646.pt on ./datasets/bus-aps/data.yaml at imgsz=640 (64.36s)
+Benchmarks legend:  - ✅ Success  - ❎ Export passed but validation failed  - ❌️ Export failed
+  Format Status❔  Size (MB)  metrics/mAP50-95(B)  Inference time (ms/im)    FPS
+0   ONNX       ✅       10.1               0.2878                   26.51  37.72
+
+Benchmarks complete for trained_models/latest-20250722203646.pt on ./datasets/bus-aps/data.yaml at imgsz=640 (30.20s)
+Benchmarks legend:  - ✅ Success  - ❎ Export passed but validation failed  - ❌️ Export failed
+  Format Status❔  Size (MB)  metrics/mAP50-95(B)  Inference time (ms/im)    FPS
+0   ONNX       ✅       10.1               0.4778                   26.33  37.98

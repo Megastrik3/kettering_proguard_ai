@@ -1,0 +1,3 @@
+To use Tensorboard, please run: tensorboard --logdir /mnt/c/Users/megas/Documents/Python/Kettering_REU/YOLO/mct_logs/logs_23072025_134736/tensorboard_logs
+representative_data_gen generates a batch size of 1 which can be slow for optimization: consider increasing the batch size
+Mixed precision enabled.

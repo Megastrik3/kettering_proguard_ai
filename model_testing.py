@@ -7,4 +7,5 @@ if __name__ == "__main__":
 
     model = YOLO(selected_model)
 
-    metrics = model.val(data="./datasets/bus-aps/data.yaml", split="test", save_json=True, save=True, imgsz=640, device=0, verbose=True)
+     metrics = model.val(data="./datasets/bus-aps/data.yaml", split="test", save_json=True, save=True, imgsz=640, device=0, verbose=True, save_txt=True)
+   print(metrics.box.map)

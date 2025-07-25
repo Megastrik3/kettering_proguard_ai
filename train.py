@@ -71,7 +71,7 @@ def export_model(model_name='best.pt'):
             print("GPU not detected. Cannot export to engine format.")
             raise Exception("GPU not detected. Cannot export to engine format.")
         model = YOLO(model_name)  # Load the model
-        output = model.export(format=export_formats[export_format], name=model_name, data="datasets/bus-aps/data.yaml")
+        output = model.export(format=export_formats[export_format], name=model_name, data="datasets/bus-aps/data.yaml", device=0, imgsz=640)
         print(f"Model exported successfully in {export_formats[export_format]} format.")
         print(output)
         print("Exporting completed successfully")
