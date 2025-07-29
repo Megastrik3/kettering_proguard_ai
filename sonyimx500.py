@@ -31,12 +31,14 @@ def main(model_path='trained_models'):
     device = AiCamera(frame_rate=16)  # Optimal frame rate for maximum DPS of the YOLO model running on the AI Camera
     model = YOLO(model_path)
     device.deploy(model)
+    device.get_kpi_info()
 
+    
     annotator = Annotator()
 
     with device as stream:
         for frame in stream:
-            device.get_kpi_info()
+            
             detections = frame.detections[frame.detections.confidence > 0.55]
             labels = [f"{model.labels[class_id]}: {score:0.2f}" for _, score, class_id, _ in detections]
 
