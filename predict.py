@@ -1,8 +1,12 @@
 from ultralytics import YOLO
+import main
 
-model = YOLO("C:\\Users\\megas\\Documents\\Python\\Kettering_REU\\YOLO\\trained_models\\latest-20250722135202.onnx", task="detect")
+if __name__ == "__main__":
+    selected_model = main.getModels()
 
-results = model.predict("./datasets/bus-aps/test/images", show=False, save=True, save_txt=False, conf=0.55, iou=0.45, device=0, stream=False, show_boxes=True, show_labels=True, show_conf=True)
+    model = YOLO(selected_model)
 
-for r in results:
-    print(r.probs)
+    results = model.predict("./datasets/bus-aps/test/images", show=False, save=True, save_txt=False, conf=0.55, iou=0.45, device=0, stream=False, show_boxes=True, show_labels=True, show_conf=True)
+
+    for r in results:
+        print(r.probs)

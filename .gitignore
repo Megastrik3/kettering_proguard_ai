@@ -12,3 +12,6 @@ Bus-APS-Version1.0.zip
 *.mov
 *.mkv
 *.zip
+/val9-olddataset-IMX500
+/mct_logs
+/Bus-APS-1.0.0.zip

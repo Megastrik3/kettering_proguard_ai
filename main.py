@@ -28,30 +28,9 @@ def ask_for_traning():
                 yolo.main(exported_model)
             break
         elif ans == 'n':
-            print("Using existing model...")
-            existing_models = os.listdir('./trained_models/')
-            if existing_models != []:
-                num_models = 1
-                trained_models = {}
-                for model in existing_models:
-                    trained_models[num_models] = model
-                    num_models += 1
-                while True:
-                        print("Trained Models:")
-                        for key, value in trained_models.items():
-                            print(f"{key}: {value}")
-                        model_choice = input(f"Please select a model [1-{len(trained_models)}]: ")
-                        if int(model_choice) > len(trained_models) or int(model_choice) < 1 or model_choice.isdigit() is False:
-                            print(f"Invalid input. Please enter a number between 1 and {len(trained_models)}.")
-                            continue
-                        else:
-                            model_choice = int(model_choice)
-                            exported_model = train.export_model(f'trained_models/{trained_models[model_choice]}')
-                            break
-            elif existing_models == []:
-                print("Using default model...")
-                model_choice = 0
-                exported_model = train.export_model("yolo11n.pt")
+            selected_model = getModels()
+            if selected_model is not None:
+                exported_model = train.export_model(selected_model)
             if exported_model.find('imx') != -1:
                 print("IMX500 model detected. Using IMX500 deployment script.")
              #   sonyimx500.main(exported_model)
@@ -72,5 +51,33 @@ def ask_for_traning():
             print("Invalid input. Please enter 'y' or 'n'.")
             continue
 
+def getModels():
+    existing_models = os.listdir('./trained_models/')
+    if existing_models != []:
+        num_models = 1
+        trained_models = {}
+        for model in existing_models:
+            trained_models[num_models] = model
+            num_models += 1
+        while True:
+                print("Trained Models:")
+                for key, value in trained_models.items():
+                    print(f"{key}: {value}")
+                model_choice = input(f"Please select a model [1-{len(trained_models)}]: ")
+                if int(model_choice) > len(trained_models) or int(model_choice) < 1 or model_choice.isdigit() is False:
+                    print(f"Invalid input. Please enter a number between 1 and {len(trained_models)}.")
+                    continue
+                else:
+                    model_choice = int(model_choice)
+                    return (f'trained_models/{trained_models[model_choice]}')
+                    break
+    elif existing_models == []:
+        print("Using default model...")
+        model_choice = 0
+        return "yolo11n.pt"
+
+
 if __name__ == '__main__':
     main()
+
+
