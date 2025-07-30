@@ -1,3 +1,8 @@
+"""
+This script trains a yolo model and exports it in the selected format.
+
+"""
+
 import shutil
 import gpu_verify
 from ultralytics import YOLO
@@ -23,10 +28,14 @@ export_formats = {
     15: "rknn"
 }
 
-
+"""
+Train the YOLO model using the specified parameters.
+This function will train the model and return the path to the latest trained model.
+"""
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
+    # This is the training command with the parameters used to train the model.
     model.train(data="datasets/bus-aps/data.yaml", epochs=500, imgsz=640, batch=-1, device=0, hsv_h=0.25, hsv_s=0.5, hsv_v=0.5, translate=0.25, scale=0.3, fliplr=0.2, iou=0.7, plots=True)
     #
     print("Training completed.")
@@ -46,6 +55,9 @@ def main():
         print(f"An unexpected error occurred: {e}")
         return './trained_models/best.pt'
 
+"""
+Export the selected YOLO model to the desired format. GPU is required for engine format.
+"""
 def export_model(model_name='best.pt'):
     print("Do you want to export the model? (y/n): ", end="")
     while True:
@@ -83,7 +95,3 @@ def export_model(model_name='best.pt'):
         print(f"An error occurred during export: {e}")
         print("Export failed. Please check the format and try again.")
         return model_name
-
-        
-    sleep(2)
-    print("Exiting YOLO Model Exporter...")

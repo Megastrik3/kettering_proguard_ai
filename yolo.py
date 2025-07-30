@@ -1,3 +1,9 @@
+"""
+This script performs real-time object detection using the YOLO model.
+It captures video from the webcam, processes each frame, and displays detected objects with bounding boxes and
+labels.
+A ROI can also be specified for detecting only specific regions.
+"""
 import math
 import time
 from ultralytics import YOLO
@@ -66,15 +72,7 @@ def main(model_file='yolo11n.pt'):
                 x1, y1, x2, y2 = box.xyxy[0]
                 x1, y1, x2, y2 = int(x1 + roi_x), int(y1 + roi_y), int(x2 + roi_x), int(y2 + roi_y) # convert to int values
 
-
                 cv2.rectangle(img, (x1, y1), (x2, y2), (10, 241, 2), 3)
-                
-                # if r.masks is not None:
-                #     for mask in r.masks.xy:
-                #         # The 'mask' variable is a list of (x, y) points
-                #         # We can draw it as a filled polygon
-                #         offset_mask = mask + [roi_x, roi_y]
-                #         cv2.polylines(img, [offset_mask.astype(int)], isClosed=True, color=(255, 0, 255), thickness=2)
                 
                 cls = int(box.cls[0])
                 if int(box.cls[0]) > 0:
@@ -97,7 +95,7 @@ def main(model_file='yolo11n.pt'):
         cv2.putText(img, fps, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2) # Display FPS
 
         # Create Window
-        cv2.imshow(f'BUS-APS: {model_file}', img)
+        cv2.imshow(f'ProGuard: {model_file}', img)
         if cv2.waitKey(1) == ord('q'):
             break
 

@@ -1,3 +1,7 @@
+"""
+This script deploys the exported YOLO model to the Sony IMX500 camera and starts live inference on the video stream.
+Code was taken and adapted from the documentation found here: https://docs.ultralytics.com/integrations/sony-imx500/
+"""
 import numpy as np
 from modlib.apps import Annotator
 from modlib.devices import AiCamera
@@ -28,7 +32,7 @@ class YOLO(Model):
 
 
 def main(model_path='trained_models'):
-    device = AiCamera(frame_rate=16)  # Optimal frame rate for maximum DPS of the YOLO model running on the AI Camera
+    device = AiCamera(frame_rate=24)  # Optimal frame rate for maximum DPS of the YOLO model running on the AI Camera
     model = YOLO(model_path)
     device.deploy(model)
     device.get_kpi_info()

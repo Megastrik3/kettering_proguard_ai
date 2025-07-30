@@ -1,3 +1,6 @@
+"""
+Model tuning script. Performs hyperparameter gittering to find optimal parameteres over 300 iterations of 10 epochs.
+"""
 from ultralytics import YOLO
 import os
 import numpy as np
@@ -7,7 +10,8 @@ def tuneModel(model_name):
     # Load the model
     model = YOLO(model_name)
 
-    # Run the evaluation
+    # Run the evaluation.
+    # Modify the model's hyperparameters for tuning
     model.tune(
         data="./datasets/bus-aps/data.yaml", epochs=10, iterations=300, optimizer="AdamW", plots=False, save=False, val=False, device=0
     )

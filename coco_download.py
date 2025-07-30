@@ -1,3 +1,8 @@
+"""
+This file was generated using Google Gemini. The prompt can be found at this address:
+https://g.co/gemini/share/866322c8304a
+"""
+
 import fiftyone as fo
 import fiftyone.zoo as foz
 import fiftyone.types as fot

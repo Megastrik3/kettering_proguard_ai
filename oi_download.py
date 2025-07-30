@@ -1,3 +1,7 @@
+"""
+This script downloads the Open Images v7 dataset, filters it for specific classes,
+and exports it in COCO format for further use in machine learning tasks.
+"""
 import fiftyone
 dataset = fiftyone.zoo.load_zoo_dataset(
               "open-images-v7",

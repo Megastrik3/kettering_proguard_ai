@@ -1,3 +1,10 @@
+"""
+This script captures images and videos using the Picamera2 library.
+It allows the user to specify the number of images to capture and the duration of video recording.
+
+A ribbon cable camera must be used. USB webcams are not supported.
+"""
+
 import os
 from picamera2 import Picamera2, Preview
 import datetime
@@ -5,6 +12,7 @@ from time import sleep
 
 print("Starting capture...")
 camera = Picamera2()
+# Set camera capture size
 camera_config = camera.create_still_configuration(main={"size": (640, 640)}, lores={"size": (640, 640)}, display="lores")
 camera.configure(camera_config)
 camera.start_preview(Preview.QTGL)
@@ -37,8 +45,10 @@ sleep(2)
 
 from picamera2.encoders import H264Encoder
 
+# Set video capture size
 video_config = camera.create_video_configuration(main={"size": (640, 640)}, lores={"size": (640, 640)}, display="lores")
 camera.configure(video_config)
+# Set encoder type and bitrate
 encoder = H264Encoder(bitrate=10000000)
 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 output = "./data-capture/video_" + timestamp + ".mp4"

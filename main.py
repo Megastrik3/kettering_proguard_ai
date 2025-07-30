@@ -1,3 +1,7 @@
+"""
+This script is the main entry point for training, exporting, and testing a YOLO model.
+This script will prompt the user to train, select a model, and export the model before running the live inference.
+"""
 import os
 from time import sleep
 import train
@@ -5,13 +9,16 @@ import yolo
 #import sonyimx500
 
 def main():
-    print("Starting bus anti-pinch system...")
+    print("Starting ProGuard anti-pinch system...")
     sleep(2)
     print("Checking for new model...")
     ask_for_traning()
 
 
-
+"""
+Prompt the user to train a new model or select an existing one.
+Once a model has been trained or selected, detection will be automatically started.
+"""
 def ask_for_traning():
     while True:
         ans = input("Do you want to train a new model? (y/n): ").strip().lower()
@@ -51,6 +58,11 @@ def ask_for_traning():
             print("Invalid input. Please enter 'y' or 'n'.")
             continue
 
+
+"""
+Read the contents of the trained_models directory and return a list of available models.
+If no models are found, return the default model 'yolo11n.pt'.
+"""
 def getModels():
     existing_models = os.listdir('./trained_models/')
     if existing_models != []:

@@ -1,3 +1,7 @@
+"""
+This code verifies if a GPU is available to use when exporting to tensorflow model
+format.
+"""
 import torch
 # Check if GPU is available
 def check_gpu():
