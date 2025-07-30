@@ -15,7 +15,7 @@ filtered_view = dataset.filter_labels(
 )
 
 filtered_view.export(
-    export_dir=r"C:\Users\megas\Documents\kettering_reu_yolo\datasets",
+    export_dir=r".\datasets",
     dataset_type=fiftyone.types.dataset_types.COCODetectionDataset,
     label_field="ground_truth",
 )
