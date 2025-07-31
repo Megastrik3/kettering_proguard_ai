@@ -58,6 +58,8 @@ python main.py
 >- IoU: 70%
 
 ### Model Exporting
+> [!IMPORTANT]
+> If you are going to use the `imx` format, you MUST uncomment the lines referencing the `sonyimx500.py` package in the `main.py` script. Please see comments in `main.py` for which lines should be uncommented. These lines are commented out because the packages used are only available on the Raspberry Pi (or linux) and therefore do not work on Windows which was the primary development platform.
 1. Once the model has finished training you will be asked if you would like to export your newly trained model in a different format. If you chose not to train a new model, you will first be asked to select a model from the `/trained_models` directory before being asked if you would like to export the model in a new format.
 2. If you select `y`, a list of all valid export options will be displayed. Using the numbers listed next to the export formats to chose a model format.
 > [!TIP]

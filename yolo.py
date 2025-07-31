@@ -13,7 +13,7 @@ os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 
 import cv2
 
-CAM_RESOLUTION = (1920, 1080)  # Set the camera resolution to 1920x1080
+CAM_RESOLUTION = (640, 640)  # Set the camera resolution to 1920x1080
 
 def main(model_file='yolo11n.pt'):
     print("Starting YOLO Object Detection...\n\n")
@@ -29,7 +29,7 @@ def main(model_file='yolo11n.pt'):
     cap.set(4, CAM_RESOLUTION[1])
 
     # Set the ROI location (X, Y) and size (W, H)
-    roi_x, roi_y, roi_w, roi_h = 0, 0, 1920, 1080
+    roi_x, roi_y, roi_w, roi_h = 0, 0, 640, 640
 
     model = YOLO(model_file, task="detect")  # Load the custom model
     print("Model loaded successfully.")
@@ -38,16 +38,21 @@ def main(model_file='yolo11n.pt'):
     classNames = model.names
     print("Class names loaded successfully.")
     print(classNames)
+    inference_times = []
+    frame_count = 0
 
     while True:
         print("Capturing frame...")
         success, img = cap.read()
+        frame_count += 1
         if not success:
             print("Failed to capture frames. Exiting...")
             break
+        start_time = time.time()
         roi_frame = img[roi_y:roi_y + roi_h, roi_x:roi_x + roi_w]
         # Load the model and perform inference only showing objects with a confidence greater than 65%
         results = model(roi_frame, stream=True, conf=0.65)
+
 
         # Calculate FPS 
         # https://www.geeksforgeeks.org/python/python-displaying-real-time-fps-at-which-webcam-video-file-is-processed-using-opencv/
@@ -72,8 +77,9 @@ def main(model_file='yolo11n.pt'):
                 x1, y1, x2, y2 = box.xyxy[0]
                 x1, y1, x2, y2 = int(x1 + roi_x), int(y1 + roi_y), int(x2 + roi_x), int(y2 + roi_y) # convert to int values
 
+
                 cv2.rectangle(img, (x1, y1), (x2, y2), (10, 241, 2), 3)
-                
+            
                 cls = int(box.cls[0])
                 if int(box.cls[0]) > 0:
                     print("Class name -->", classNames[cls])
@@ -95,13 +101,21 @@ def main(model_file='yolo11n.pt'):
         cv2.putText(img, fps, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (241, 2, 2), 2) # Display FPS
 
         # Create Window
-        cv2.imshow(f'ProGuard: {model_file}', img)
+        cv2.imshow(f'BUS-APS: {model_file}', img)
+
+        end_time = time.time()
+        inference_time = end_time - start_time
+        if frame_count > 150:
+            inference_times.append(inference_time)
+        print(f"Inference time for frame: {inference_time:.4f} seconds")
         if cv2.waitKey(1) == ord('q'):
             break
 
     cap.release()
     cv2.destroyAllWindows()
     print("Average FPS:", fps_sum / fps_counter if fps_counter > 0 else 0)
+    print("Average Inference Time:", sum(inference_times) / len(inference_times) if inference_times else 0)
+
 
 if __name__ == '__main__':
     main()

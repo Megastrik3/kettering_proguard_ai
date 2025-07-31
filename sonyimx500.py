@@ -32,19 +32,28 @@ class YOLO(Model):
 
 
 def main(model_path='trained_models'):
-    device = AiCamera(frame_rate=24)  # Optimal frame rate for maximum DPS of the YOLO model running on the AI Camera
+    device = AiCamera(frame_rate=12)  # Optimal frame rate for maximum DPS of the YOLO model running on the AI Camera
     model = YOLO(model_path)
     device.deploy(model)
-    device.get_kpi_info()
 
-    
+    dps_counter = 0
+    dps_total = 0
+    fps_counter = 0
+    fps_total = 0
     annotator = Annotator()
-
+    delay_counter = 0
     with device as stream:
         for frame in stream:
-            
             detections = frame.detections[frame.detections.confidence > 0.55]
             labels = [f"{model.labels[class_id]}: {score:0.2f}" for _, score, class_id, _ in detections]
 
             annotator.annotate_boxes(frame, detections, labels=labels, alpha=0.3, corner_radius=10)
-            frame.display()
+            metrics = frame.display() 
+            delay_counter = delay_counter + 1
+            if delay_counter > 150:
+                dps_counter = dps_counter + 1
+                dps_total = dps_total + metrics[0]
+                fps_counter = fps_counter + 1
+                fps_total = fps_total + metrics[1]
+                print(f'Average DPS: {(dps_total/dps_counter):.2f}')
+                print(f'Average FPS: {(fps_total/fps_counter):.2f}')

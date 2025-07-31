@@ -6,6 +6,8 @@ import os
 from time import sleep
 import train
 import yolo
+
+"""Uncomment the following line to use the Sony IMX500 deployment script."""
 #import sonyimx500
 
 def main():
@@ -30,6 +32,8 @@ def ask_for_traning():
                 exported_model = 'best.pt'
             if exported_model.find('imx') != -1:
                 print("IMX500 model detected. Using IMX500 deployment script.")
+
+                """Uncomment the following line to use the Sony IMX500 deployment script."""
                # sonyimx500.main(exported_model)
             else:
                 yolo.main(exported_model)
@@ -40,6 +44,8 @@ def ask_for_traning():
                 exported_model = train.export_model(selected_model)
             if exported_model.find('imx') != -1:
                 print("IMX500 model detected. Using IMX500 deployment script.")
+
+                """Uncomment the following line to use the Sony IMX500 deployment script."""
              #   sonyimx500.main(exported_model)
             else:
                 yolo.main(exported_model)
@@ -50,6 +56,8 @@ def ask_for_traning():
 
             if exported_model.find('imx') != -1:
                 print("IMX500 model detected. Using IMX500 deployment script.")
+
+                """Uncomment the following line to use the Sony IMX500 deployment script."""
              #   sonyimx500.main(exported_model)
             else:
                 yolo.main(exported_model)

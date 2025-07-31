@@ -6,10 +6,10 @@ This script trains a yolo model and exports it in the selected format.
 import shutil
 import gpu_verify
 from ultralytics import YOLO
-from time import sleep
 import datetime
 import os
 
+# List of export formats supported by Ultralytics
 export_formats = {
     1: "torchscript",
     2: "onnx",
@@ -35,9 +35,12 @@ This function will train the model and return the path to the latest trained mod
 def main():
     print("Starting YOLO Training...")
     model = YOLO("yolo11n.pt")  # Load a COCO-pretrained YOLO11n model
+
+
     # This is the training command with the parameters used to train the model.
     model.train(data="datasets/bus-aps/data.yaml", epochs=500, imgsz=640, batch=-1, device=0, hsv_h=0.25, hsv_s=0.5, hsv_v=0.5, translate=0.25, scale=0.3, fliplr=0.2, iou=0.7, plots=True)
-    #
+
+
     print("Training completed.")
     try:
         version_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
