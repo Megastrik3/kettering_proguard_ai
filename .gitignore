@@ -1,7 +1,7 @@
 /000650.jpg
-/datasets
+/datasets/bus-aps/
 /requirements.txt
-/runs
+/runs/detect
 /__pycache__
 busaps-seg2.engine
 yolo11n.pt
