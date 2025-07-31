@@ -16,7 +16,7 @@ The code based is laid out as such:
 - `coco_download.py`: This script is used to download a subset of the image from the COCO-2017 dataset.
 
 ### Folders
--`/datasets`: this folder contains the active dataset that is being used to train the model. The active dataset resides in a subfolder called "bus-aps".
+- `/datasets`: this folder contains the active dataset that is being used to train the model. The active dataset resides in a subfolder called "bus-aps".
 - `/conda_environment`: This folder holds the conda config file which can be used to load the libraries for this repository.
 - `/runs`: This folder contains every version trained model and the export varients.
 
@@ -31,7 +31,7 @@ The code based is laid out as such:
 > [!IMPORTANT]
 > The dataset files (train, test, valid, etc...) MUST be in a folder in the `/datasets` directory called `bus-aps`. All scripts which use the dataset will look in this dirctory, so it is very important that the dataset be in this folder.
 
-### Training, exporting and testing a model
+## Training, exporting and testing a model
 
 ### Model Training
 1. To train ProGuard using the downloaded dataset, run the `main.py` script using the following command:
@@ -64,7 +64,7 @@ python main.py
 > Use the `ONNX` format when running in a CPU only environmet. Use the `engine` format when using the model in a GPU ready environment. Use the `imx` format to quantize and export the model for use on the Sony IMX500. The `ncnn` format is used when running the model on a Raspberry Pi with no accelerator.
 
 > [!IMPORTANT]
-> The `imx` and `ncnn` model versions can only be exported on a Raspberry Pi due to the required libraries. Please see the [Ultralytics IMX500 Docs](https://docs.ultralytics.com/integrations/sony-imx500/#using-imx500-export-in-deployment) for instructions on which packages are required to export the model to the `imx` format.
+> The `imx` and `ncnn` model versions can only be exported on a Raspberry Pi due to the required libraries. Please see the [Ultralytics IMX500 Docs](https://docs.ultralytics.com/integrations/sony-imx500/#using-imx500-export-in-deployment) for instructions on which packages are required to export the model to the `imx` format. The `engine` format requires a GPU and will fail if a GPU is not present.
 3. Once the model has finished exporting, it will be saved in the `/trained_models` directory with the same name but different extension as the originally selected model.
 
 ### Live Webcam Testing
@@ -73,19 +73,29 @@ python main.py
 > If a model with the `IMX` format was selected, the script will automatically decompress and upload the model to the Sony IMX500 camera. You may be asked if you want to re-extract the model if you are running the same model version more than one. Enter `n` or just press the `Enter` key to skip unless you suspect an issue with the existing version.
 2. To stop detection press the `q` key in the detection window. 
 3. After quiting the detection window, the terminal will show the average inference and fps of the model. This capturing process is started 150 frames after the video stream has started in order to give the model time to 'warm up'.
+> [!NOTE]
+> If using the `imx` version of the model, the script will open a different window to display the model inference output. This window will display FPS and DPS. To close the window, press the `esc` key. The terminal will show the average FPS and DPS in the output.
 
 
 ## Gather data to build a dataset
 
 ### Download part of the Open-Images dataset
-To download images from the Open-Images dataset, use the `oi_download.py` script. Currently, this script is designed to download no more than 2,000 images from Open-Images from the classes 'person' and 'backpack'. The split that images are pulled from will need to be manually changed according to the user's need. Images are exported to the `/datasets/` folder for easy access.
+To download images from the Open-Images dataset, use the `oi_download.py` script. Currently, this script is designed to download no more than 2,000 images from Open-Images from the classes 'person' and 'backpack'. The split that images are pulled from will need to be manually changed according to the user's need. Images are exported to the `/datasets/` folder for easy access. Use the following command:
+```bash
+python oi_download.py
+```
 
 ### Download part of the COCO-2017 dataset
-To download images from the COCO-2017 dataset, use the `coco_download.py` script. This script will download no more than 2000 images which contain the classes 'person' or 'backpack'. Images are downloaded and exported to the `/datasets/` folder for easy access.
+To download images from the COCO-2017 dataset, use the `coco_download.py` script. This script will download no more than 2000 images which contain the classes 'person' or 'backpack'. Images are downloaded and exported to the `/datasets/` folder for easy access. Use the following command:
+```bash
+python coco_download.py
+```
 
 ### Capturing data from a Raspberry Pi camera
-To capture images directly from a Raspberry Pi with attached ribbon cable camera, use the `capture-data.py` script. This script will ask how many images should be captured, then capture that many images with a 1 second delay. Images are saved to the `/data-capture` folder. Once image capture is complete, the script will ask if you want to capture a video as well. Enter `0` to end the script, or the number of seconds of video you want to capture. Recorded videos are also saved to the `/data-capture/` folder.
-
+To capture images directly from a Raspberry Pi with attached ribbon cable camera, use the `capture-data.py` script. This script will ask how many images should be captured, then capture that many images with a 1 second delay. Images are saved to the `/data-capture` folder. Once image capture is complete, the script will ask if you want to capture a video as well. Enter `0` to end the script, or the number of seconds of video you want to capture. Recorded videos are also saved to the `/data-capture/` folder. Using the following command:
+```bash
+python capture-data.py
+```
 
 
 
