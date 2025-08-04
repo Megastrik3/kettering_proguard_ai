@@ -17,3 +17,6 @@ Bus-APS-Version1.0.zip
 /Bus-APS-1.0.0.zip
 /Bus-APS-Version1.0
 /val9-olddataset-IMX500
+/trained_models/old_models
+/trained_models/old_models/*
+/datasets/bus-aps-PUBLICATION
