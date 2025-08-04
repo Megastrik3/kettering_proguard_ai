@@ -2,6 +2,14 @@
 <p>Modern conventional anti-pinch systems often rely on indirect sensors such as pressure sensors or data from hall effect sensors to detect obstructions. While these systems are tried and true safety mechanisms, they are reactive and therefore require some level of pinching to occur before being triggered. This reactive approach presents several concerns for passenger safety, especially when considering children on school buses, as they are more likely to be victims of pinching events. Existing direct detection methods such as infrared or ultrasonic sensors solve the problems presented by reactive detection systems. However, infrared sensors lack the coverage required to successfully monitor bus entryways since school bus doors extend beyond the bus. Ultrasonic sensors have a larger beam area but are susceptible to environmental conditions such as wind and humidity. The critical nature of anti-pinch systems requires a robust and reliable solution which can adapt to various applications and environments. This paper proposes ProGuard, a novel and preemptive vision-based pinch detection system which uses state-of-the-art object detection algorithms to identify potential pinching events in bus entryways. ProGuard is based on YOLOv11 nano and is designed to run in real-time on low-power edge hardware. ProGuard is trained to identify people and backpacks with test results yielding a mean average precision (mAP) of 0.522 at IoU 0.5-0.95. When using an accelerated camera, ProGuard was able to achieve 24 frames per second and an inference time of 125ms. These results demonstrate that ProGuard offers an efficient and real-time alternative to current pinch detection systems while operating on low-cost consumer hardware. <p/>
 
 
+<a href="https://universe.roboflow.com/hudson-bradley/proguard-fsphe">
+    <img src="https://app.roboflow.com/images/download-dataset-badge.svg"></img>
+</a>
+
+<a href="https://universe.roboflow.com/hudson-bradley/proguard-fsphe/model/">
+    <img src="https://app.roboflow.com/images/try-model-badge.svg"></img>
+</a>
+
 # Repository Map
 The repository is structured as such:
 
