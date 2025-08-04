@@ -3,7 +3,7 @@
 
 
 # Repository Map
-The code based is laid out as such:
+The repository is structured as such:
 
 ### Python Scripts
 - `main.py`: This is the base script that calls train.py, gpu_verfy.py, sonyimx500.py, and yolo.py. This script coordinates training, exporting, and predicting using a live webcam.
@@ -18,7 +18,7 @@ The code based is laid out as such:
 ### Folders
 - `/datasets`: this folder contains the active dataset that is being used to train the model. The active dataset resides in a subfolder called "bus-aps".
 - `/conda_environment`: This folder holds the conda config file which can be used to load the libraries for this repository.
-- `/runs`: This folder contains every version trained model and the export varients.
+- `/runs`: This folder contains every version of the trained models and their export varients.
 
 # How to use the Repository
 
@@ -40,7 +40,7 @@ python main.py
 ```
 2. After starting this script, it will ask if you want to train a new model version. Entry `y` when prompted and the training script will start automatically.
 >[!TIP]
-> If you don't have a GPU, the script will fail because it requires a GPU inorder to train the model. If you wish to continue without a GPU, please see the `main.py` script for instructions on how to disable required GPU support.
+> If you don't have a GPU, the script will fail because it requires a GPU in order to train the model. If you wish to continue without a GPU, please see the `train.py` script for instructions on how to disable required GPU support.
 3. Once training has finished, the training output will be saved to `/runs/detect/trainXX`. The best version of the model will be moved to the `/trained_models` folder and will be given the name `latest_[timestamp].pt`.
 
 >[!NOTE]
@@ -59,14 +59,14 @@ python main.py
 
 ### Model Exporting
 > [!IMPORTANT]
-> If you are going to use the `imx` format, you MUST uncomment the lines referencing the `sonyimx500.py` package in the `main.py` script. Please see comments in `main.py` for which lines should be uncommented. These lines are commented out because the packages used are only available on the Raspberry Pi (or linux) and therefore do not work on Windows which was the primary development platform.
+> If you are going to use the `imx` format, you MUST uncomment the lines referencing the `sonyimx500` package in the `main.py` script. Please see comments in `main.py` for which lines should be uncommented. These lines are commented out because the packages used are only available on the Raspberry Pi (or linux) and therefore do not work on Windows which was the primary development platform.
 1. Once the model has finished training you will be asked if you would like to export your newly trained model in a different format. If you chose not to train a new model, you will first be asked to select a model from the `/trained_models` directory before being asked if you would like to export the model in a new format.
-2. If you select `y`, a list of all valid export options will be displayed. Using the numbers listed next to the export formats to chose a model format.
+2. If you select `y`, a list of all valid export options will be displayed. Use the numbers listed next to the export formats to chose a model format.
 > [!TIP]
 > Use the `ONNX` format when running in a CPU only environmet. Use the `engine` format when using the model in a GPU ready environment. Use the `imx` format to quantize and export the model for use on the Sony IMX500. The `ncnn` format is used when running the model on a Raspberry Pi with no accelerator.
 
 > [!IMPORTANT]
-> The `imx` and `ncnn` model versions can only be exported on a Raspberry Pi due to the required libraries. Please see the [Ultralytics IMX500 Docs](https://docs.ultralytics.com/integrations/sony-imx500/#using-imx500-export-in-deployment) for instructions on which packages are required to export the model to the `imx` format. The `engine` format requires a GPU and will fail if a GPU is not present.
+> The `imx` and `ncnn` model versions can only be exported on a Raspberry Pi (or linux) due to the required libraries. Please see the [Ultralytics IMX500 Docs](https://docs.ultralytics.com/integrations/sony-imx500/#using-imx500-export-in-deployment) for instructions on which packages are required to export the model to the `imx` format. The `engine` format requires a GPU and will fail if a GPU is not present.
 3. Once the model has finished exporting, it will be saved in the `/trained_models` directory with the same name but different extension as the originally selected model.
 
 ### Live Webcam Testing

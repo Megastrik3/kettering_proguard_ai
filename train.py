@@ -38,6 +38,7 @@ def main():
 
 
     # This is the training command with the parameters used to train the model.
+    # remove 'device=0' if you want to train on CPU.
     model.train(data="datasets/bus-aps/data.yaml", epochs=500, imgsz=640, batch=-1, device=0, hsv_h=0.25, hsv_s=0.5, hsv_v=0.5, translate=0.25, scale=0.3, fliplr=0.2, iou=0.7, plots=True)
 
 
