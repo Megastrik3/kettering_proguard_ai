@@ -4,10 +4,10 @@ User's will first be prompted to select a model from the list of available model
 """
 from ultralytics import YOLO
 import os
-import model_metrics
+import main
 
 if __name__ == "__main__":
-  selected_model = model_metrics.getModels()
+  selected_model = main.getModels()
 
   model = YOLO(selected_model)
 
